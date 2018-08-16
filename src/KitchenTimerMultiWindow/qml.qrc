@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>KitchenTimerWindow.qml</file>
+        <file>main.qml</file>
+    </qresource>
+</RCC>
