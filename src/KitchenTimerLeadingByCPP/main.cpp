@@ -10,13 +10,13 @@ int main(int argc, char *argv[])
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
   QGuiApplication app(argc, argv);
-  KitchenTimer timer;
 
   QQmlApplicationEngine engine;
   engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
   if (engine.rootObjects().isEmpty())
     return -1;
 
+  KitchenTimer timer;
   //QML主導のときプロパティバインディングしていたところ相当の実装
   QObject *root = engine.rootObjects().first();
   QObject *remain = root->findChild<QObject *>("remainText");

@@ -6,7 +6,9 @@ ApplicationWindow {
   visible: true
   width: 400
   height: 200
-  title: qsTr("Kitchen Timer leading by CPP")
+  title: qsTr("Kitchen Timer leading by QML")
+  //背景色の変更
+  color: timer.fired ? "#ee9999" : "white"
 
   //残り時間の表示とスタート・クリアボタンの配置
   GridLayout {
@@ -14,21 +16,26 @@ ApplicationWindow {
     anchors.margins: 10
     columns: 2
     Text {
-      objectName: "remainText"
+      id: remainText
       Layout.fillWidth: true
       Layout.columnSpan: 2
       horizontalAlignment: Text.AlignHCenter
       font.pointSize: 64
+      text: timer.remainTimeString
     }
     Button {
-      objectName: "startButton"
+      id: startButton
       Layout.fillWidth: true
       text: "Start"
+      enabled: !timer.running
+      onClicked: timer.start()
     }
     Button {
-      objectName: "clearButton"
+      id: clearButton
       Layout.fillWidth: true
       text: "Clear"
+      enabled: timer.running
+      onClicked: timer.clear()
     }
   }
 }
