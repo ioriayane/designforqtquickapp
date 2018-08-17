@@ -6,7 +6,7 @@ ApplicationWindow {
   visible: true
   width: 400
   height: 200
-  title: qsTr("Kitchen Timer leading by CPP")
+  title: qsTr("Kitchen Timer leading by CPP1")
 
   //残り時間の表示とスタート・クリアボタンの配置
   GridLayout {

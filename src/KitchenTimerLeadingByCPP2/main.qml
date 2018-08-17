@@ -6,7 +6,7 @@ ApplicationWindow {
   visible: true
   width: 400
   height: 200
-  title: qsTr("Kitchen Timer leading by QML")
+  title: qsTr("Kitchen Timer leading by CPP2")
   //背景色の変更
   color: timer.fired ? "#ee9999" : "white"
 
