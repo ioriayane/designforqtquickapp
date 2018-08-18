@@ -1,15 +1,16 @@
 #include "kitchentimer.h"
 
 #include <QDateTime>
+#include <QTimerEvent>
 
 KitchenTimer::KitchenTimer(QObject *parent)
   : QObject(parent)
+  , m_timerId(0)
   , m_remainTimeString(QStringLiteral("03:00"))
   , m_countTime(180000)
   , m_fired(false)
   , m_running(false)
 {
-  connect(&m_timer, &QTimer::timeout, this, &KitchenTimer::triggered);
 }
 
 QString KitchenTimer::remainTimeString() const
@@ -70,29 +71,41 @@ void KitchenTimer::setRunning(bool running)
 
 void KitchenTimer::start()
 {
-  m_elapse.start();
-  m_timer.start(100);
-  setRunning(true);
+  if(m_timerId == 0){
+    m_elapse.start();
+    m_timerId = startTimer(100);
+    setRunning(true);
+  }
+}
+
+void KitchenTimer::stop()
+{
+  if(m_timerId != 0){
+    killTimer(m_timerId);
+    m_timerId = 0;
+  }
 }
 
 void KitchenTimer::clear()
 {
-  m_timer.stop();
+  stop();
   setFired(false);
   setRunning(false);
   updateRemainTime(countTime());
 }
 
-void KitchenTimer::triggered()
+void KitchenTimer::timerEvent(QTimerEvent *e)
 {
-  int remain = countTime() - static_cast<int>(m_elapse.elapsed());
-  remain = qMin(remain, countTime());
-  if(remain > 0){
-    updateRemainTime(remain);
-  }else{
-    updateRemainTime(0);
-    m_timer.stop();
-    setFired(true);
+  if(e->timerId() == m_timerId){
+    int remain = countTime() - static_cast<int>(m_elapse.elapsed());
+    remain = qMin(remain, countTime());
+    if(remain > 0){
+      updateRemainTime(remain);
+    }else{
+      stop();
+      setFired(true);
+      updateRemainTime(0);
+    }
   }
 }
 

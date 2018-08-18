@@ -3,7 +3,6 @@
 
 #include <QElapsedTimer>
 #include <QObject>
-#include <QTimer>
 
 class KitchenTimer : public QObject
 {
@@ -34,11 +33,14 @@ public slots:
   void setFired(bool fired);
   void setRunning(bool running);
   void start();
+  void stop();
   void clear();
-  void triggered();
+
+protected:
+    void timerEvent(QTimerEvent *e);
 
 private:
-  QTimer m_timer;
+  int m_timerId;
 
   QElapsedTimer m_elapse;
   QString m_remainTimeString;
