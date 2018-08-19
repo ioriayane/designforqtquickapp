@@ -19,11 +19,13 @@ int main(int argc, char *argv[])
   KitchenTimer timer;
   //QML主導のときプロパティバインディングしていたところ相当の実装
   QObject *root = engine.rootObjects().first();
+  //時間表示とボタンのQMLタイプのポインタを取得                             [1]
   QObject *remain = root->findChild<QObject *>("remainText");
   QObject *start = root->findChild<QObject *>("startButton");
   QObject *clear = root->findChild<QObject *>("clearButton");
-  //標準QMLタイプのセッターがスロットになっていないのでラムダ式で受けてセットする
-  QObject::connect(&timer, &KitchenTimer::remainTimeStringChanged, [remain](const QString &remainTimeString){
+  //タイマー機能の値の変化をQML側にセット                                   [2]
+  QObject::connect(&timer, &KitchenTimer::remainTimeStringChanged
+                   , [remain](const QString &remainTimeString){
     remain->setProperty("text", remainTimeString);
   });
   QObject::connect(&timer, &KitchenTimer::runningChanged, [start](bool running){
@@ -32,10 +34,6 @@ int main(int argc, char *argv[])
   QObject::connect(&timer, &KitchenTimer::runningChanged, [clear](bool running){
     clear->setProperty("enabled", running);
   });
-  //標準QMLタイプにはクラスのヘッダーをincludeできない場合があるので文字列ベースでコネクトする
-  QObject::connect(start, SIGNAL(clicked()), &timer, SLOT(start()));
-  QObject::connect(clear, SIGNAL(clicked()), &timer, SLOT(clear()));
-  //背景色の変更
   QObject::connect(&timer, &KitchenTimer::firedChanged, [root](bool fired){
     if(fired){
       root->setProperty("color", QColor("#ee9999"));
@@ -43,8 +41,11 @@ int main(int argc, char *argv[])
       root->setProperty("color", QColor("#ffffff"));
     }
   });
+  //QML側の操作をタイマー機能に伝える                                      [3]
+  QObject::connect(start, SIGNAL(clicked()), &timer, SLOT(start()));
+  QObject::connect(clear, SIGNAL(clicked()), &timer, SLOT(clear()));
 
-  //初期状態
+  //初期状態                                                        [4]
   remain->setProperty("text", timer.remainTimeString());
   clear->setProperty("enabled", false);
 

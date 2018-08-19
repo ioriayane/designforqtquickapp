@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 
   QQmlApplicationEngine engine;
 
-  //QMLコンテキストにタイマークラスを追加
+  //QMLコンテキストにタイマークラスを追加    [1]
   KitchenTimer timer;
   engine.rootContext()->setContextProperty("timer", &timer);
 

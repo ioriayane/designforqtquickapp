@@ -8,6 +8,7 @@ int main(int argc, char *argv[])
 
   QGuiApplication app(argc, argv);
 
+  //QMLへの公開処理           [1]
   qmlRegisterType<KitchenTimer>("tech.relog.plugin.kitchentimer"
                                    , 1, 0, "KitchenTimer");
 

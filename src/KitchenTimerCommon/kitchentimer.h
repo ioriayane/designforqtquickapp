@@ -8,6 +8,7 @@ class KitchenTimer : public QObject
 {
   Q_OBJECT
 
+  //QML向けにプロパティを登録    [1]
   Q_PROPERTY(QString remainTimeString READ remainTimeString NOTIFY remainTimeStringChanged)
   Q_PROPERTY(int countTime READ countTime WRITE setCountTime NOTIFY countTimeChanged)
   Q_PROPERTY(bool fired READ fired NOTIFY firedChanged)
@@ -37,7 +38,7 @@ public slots:
   void clear();
 
 protected:
-    void timerEvent(QTimerEvent *e);
+  void timerEvent(QTimerEvent *e);
 
 private:
   int m_timerId;
