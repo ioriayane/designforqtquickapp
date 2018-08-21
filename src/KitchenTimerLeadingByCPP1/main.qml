@@ -14,19 +14,19 @@ ApplicationWindow {
     anchors.margins: 10
     columns: 2
     Text {
-      objectName: "remainText"
+      objectName: "remainText"  //C++からQMLタイプを検索する目印 [1]
       Layout.fillWidth: true
       Layout.columnSpan: 2
       horizontalAlignment: Text.AlignHCenter
       font.pointSize: 64
     }
     Button {
-      objectName: "startButton"
+      objectName: "startButton"  //C++からQMLタイプを検索する目印 [1]
       Layout.fillWidth: true
       text: "Start"
     }
     Button {
-      objectName: "clearButton"
+      objectName: "clearButton"  //C++からQMLタイプを検索する目印 [1]
       Layout.fillWidth: true
       text: "Clear"
     }

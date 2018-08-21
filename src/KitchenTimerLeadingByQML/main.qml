@@ -1,6 +1,7 @@
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
+// C++で公開登録したクラスをインポート [1]
 import tech.relog.plugin.kitchentimer 1.0
 
 ApplicationWindow {
@@ -39,7 +40,7 @@ ApplicationWindow {
       onClicked: timer.clear()
     }
   }
-  //残り時間をカウントするとタイマー機能
+  //残り時間をカウントするとタイマー機能  [2]
   KitchenTimer {
     id: timer
 //    countTime: 10000

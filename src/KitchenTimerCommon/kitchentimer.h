@@ -23,6 +23,7 @@ public:
   bool running() const;
 
 signals:
+  //プロパティ変化時のシグナル   [2]
   void remainTimeStringChanged(QString remainTimeString);
   void countTimeChanged(int countTime);
   void firedChanged(bool fired);
