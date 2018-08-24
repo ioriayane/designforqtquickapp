@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 
   //初期状態                                                        [4]
   remain->setProperty("text", timer.remainTimeString());
-  clear->setProperty("enabled", false);
+  clear->setProperty("enabled", timer.running());
 
   return app.exec();
 }
