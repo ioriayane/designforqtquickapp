@@ -1,6 +1,7 @@
 ﻿#include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QtQuick/QQuickItem>
+#include <QMetaObject>
 #include "kitchentimer.h"
 
 #include <QDebug>
@@ -49,10 +50,19 @@ int main(int argc, char *argv[])
   QObject::connect(clear, SIGNAL(clicked()), &timer, SLOT(clear()));
 
   timer.setCountTime(3000);
+  timer.clear();
 
   //初期状態                                                        [4]
-  remain->setProperty("text", timer.remainTimeString());
-  clear->setProperty("enabled", timer.running());
+  QVariant returnedValue;
+  QMetaObject::invokeMethod(root, "initialize"
+                            , Q_RETURN_ARG(QVariant, returnedValue)
+                            , Q_ARG(QVariant, timer.remainTimeString())
+                            , Q_ARG(QVariant, timer.running())
+                            );
+  qDebug() << returnedValue.toBool();
+  //以下でも良い
+//  remain->setProperty("text", timer.remainTimeString());
+//  clear->setProperty("enabled", timer.running());
 
   return app.exec();
 }
