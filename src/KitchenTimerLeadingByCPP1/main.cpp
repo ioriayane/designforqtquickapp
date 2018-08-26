@@ -1,4 +1,4 @@
-#include <QGuiApplication>
+﻿#include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QtQuick/QQuickItem>
 #include "kitchentimer.h"
@@ -39,14 +39,16 @@ int main(int argc, char *argv[])
   QObject::connect(&timer, &KitchenTimer::firedChanged
                    , [root](bool fired){
     if(fired){
-      root->setProperty("color", QColor("#ee9999"));
+      root->setProperty("color", "#ee9999");
     }else{
-      root->setProperty("color", QColor("#ffffff"));
+      root->setProperty("color", "#ffffff");
     }
   });
   //QML側の操作をタイマー機能に伝える                                      [3]
   QObject::connect(start, SIGNAL(clicked()), &timer, SLOT(start()));
   QObject::connect(clear, SIGNAL(clicked()), &timer, SLOT(clear()));
+
+  timer.setCountTime(3000);
 
   //初期状態                                                        [4]
   remain->setProperty("text", timer.remainTimeString());
