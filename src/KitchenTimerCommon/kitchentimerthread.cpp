@@ -183,14 +183,13 @@ void KitchenTimerThread::stop()
 
 void KitchenTimerThread::clear()
 {
-  setFired(false);
-  if(running()){
-    //動いてたらフラグを落として停止させる
-    setRunning(false);
-  }else{
-    //すでに止まってたら表示だけリセット
+  if(fired()){
+    //カウントが終わってたら表示をリセット
     setRemainTimeString(d->makeRemainTimeString(countTime()));
   }
+  //カウント状況をクリア（カウント中ならフラグを落として停止も）
+  setRunning(false);
+  setFired(false);
 }
 
 void KitchenTimerThread::finishedTimer(bool finished)
