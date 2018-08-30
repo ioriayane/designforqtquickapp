@@ -1,4 +1,4 @@
-import QtQuick 2.11
+﻿import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 // C++で公開登録したクラスをインポート [1]
@@ -8,7 +8,7 @@ ApplicationWindow {
   visible: true
   width: 400
   height: 200
-  title: qsTr("Kitchen Timer leading by QML")
+  title: qsTr("Kitchen Timer leading by QML1")
   //背景色の変更
   color: timer.fired ? "#ee9999" : "white"
 
