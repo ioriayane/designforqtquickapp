@@ -52,6 +52,8 @@ private:
   int m_countTime;
   bool m_fired;
   bool m_running;
+
+  Q_DISABLE_COPY(KitchenTimerThread)
 };
 
 #endif // KITCHENTIMERTHREAD_H
