@@ -29,7 +29,7 @@ signals:
   void countTimeChanged(int countTime);
   void firedChanged(bool fired);
   void runningChanged(bool running);
-
+  //カウント開始時のシグナル                    [1]
   void runTimer(int countTime);
 
 public slots:
@@ -40,12 +40,14 @@ public slots:
   void start();
   void stop();
   void clear();
-
+  //カウント終了時のスロット
   void finishedTimer(bool finished);
 
 private:
+  //プライベートクラス用の宣言                  [2]
   class Private;
   Private *d;
+  //プライベートクラス用のスレッドクラス
   QThread dThread;
 
   QString m_remainTimeString;

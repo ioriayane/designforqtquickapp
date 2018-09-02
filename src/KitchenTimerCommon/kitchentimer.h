@@ -1,8 +1,8 @@
-#ifndef KITCHENTIMER_H
+﻿#ifndef KITCHENTIMER_H
 #define KITCHENTIMER_H
 
-#include <QElapsedTimer>
 #include <QObject>
+#include <QElapsedTimer>
 
 class KitchenTimer : public QObject
 {
@@ -51,6 +51,8 @@ private:
   bool m_running;
 
   void updateRemainTime(int remainTime);
+
+  Q_DISABLE_COPY(KitchenTimer)
 };
 
 #endif // KITCHENTIMER_H

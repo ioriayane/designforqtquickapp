@@ -1,7 +1,7 @@
 ﻿#include "kitchentimerthread.h"
 #include <QDateTime>
-#include <QDebug>
 #include <QElapsedTimer>
+#include <QDebug>
 
 class KitchenTimerThread::Private : public QObject
 {
@@ -13,6 +13,7 @@ public:
   QString makeRemainTimeString(int remainTime) const;
 
 signals:
+  //カウント終了と残り時間の更新シグナル            [1]
   void finished(bool success);
   void remainTimeStringChanged(QString remainTimeString);
 
@@ -20,13 +21,12 @@ public slots:
   void runTimer(int countTime);
 
 private:
-  KitchenTimerThread *q;
+  KitchenTimerThread *q;  // 親クラスのポインタ [2]
 };
 
 
 KitchenTimerThread::Private::Private(KitchenTimerThread *parent)
-  : /*QObject()
-  ,*/ q(parent)
+  : q(parent)           //メンバの初期化    [3]
 {
   qDebug() << "Private()" << QThread::currentThreadId();
 }
@@ -43,6 +43,7 @@ QString KitchenTimerThread::Private::makeRemainTimeString(int remainTime) const
   return d.toString(QStringLiteral("mm:ss"));
 }
 
+//カウント処理     [4]
 void KitchenTimerThread::Private::runTimer(int countTime)
 {
   qDebug() << "runTimer()" << QThread::currentThreadId();
@@ -79,7 +80,7 @@ void KitchenTimerThread::Private::runTimer(int countTime)
 
 KitchenTimerThread::KitchenTimerThread(QObject *parent)
   : QObject(parent)
-  , d(new Private(this))
+  , d(new Private(this))    //プライベートクラスのインスタンス化
   , dThread(this)
   , m_remainTimeString(QStringLiteral("03:00"))
   , m_countTime(180000)
@@ -88,11 +89,12 @@ KitchenTimerThread::KitchenTimerThread(QObject *parent)
 {
   qDebug() << "KitchenTimerThread()" << QThread::currentThreadId();
 
-  //プライベートクラスをスレッドへ移動
+  //プライベートクラスをスレッドへ移動               [5]
   d->moveToThread(&dThread);
 
+  //各種シグナルの接続                       [6]
   //スレッドのイベントループ停止のシグナルでクラスを破棄
-  connect(&dThread, &QThread::finished, d, &QObject::deleteLater);  //thisじゃなくてthreadなの注意
+  connect(&dThread, &QThread::finished, d, &QObject::deleteLater);
   //タイマー処理開始シグナルを接続
   connect(this, &KitchenTimerThread::runTimer, d, &Private::runTimer);
   //タイマー終了シグナルを接続
@@ -100,14 +102,14 @@ KitchenTimerThread::KitchenTimerThread(QObject *parent)
   //タイマーの時刻更新シグナルを接続
   connect(d, &Private::remainTimeStringChanged, this, &KitchenTimerThread::setRemainTimeString);
 
-  //スレッドのイベントループ開始
+  //スレッドのイベントループ開始                  [7]
   dThread.start();
 }
 
 KitchenTimerThread::~KitchenTimerThread()
 {
   qDebug() << "~KitchenTimerThread()" << QThread::currentThreadId();
-  //終了処理
+  //終了処理                              [8]
   setRunning(false);
   dThread.exit();
   dThread.wait();
@@ -195,9 +197,10 @@ void KitchenTimerThread::clear()
 void KitchenTimerThread::finishedTimer(bool finished)
 {
   qDebug() << "finishedTimer()" << finished << QThread::currentThreadId();
+  //最後までカウントしているかでtrue/falseを決める
   setFired(finished);
   setRunning(finished);
 }
 
-//これを書くと通常は対象にならないcppファイルもmocが実行される
+//mocの対象にする                     [9]
 #include "kitchentimerthread.moc"
