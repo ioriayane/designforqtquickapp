@@ -36,7 +36,8 @@ KitchenTimerThread::Private::~Private()
   qDebug() << "~Private()" << QThread::currentThreadId();
 }
 
-QString KitchenTimerThread::Private::makeRemainTimeString(int remainTime) const
+QString KitchenTimerThread::Private::makeRemainTimeString
+(int remainTime) const
 {
   QDateTime d;
   d.setTime_t(static_cast<uint>(remainTime / 1000));
@@ -100,7 +101,8 @@ KitchenTimerThread::KitchenTimerThread(QObject *parent)
   //タイマー終了シグナルを接続
   connect(d, &Private::finished, this, &KitchenTimerThread::finishedTimer);
   //タイマーの時刻更新シグナルを接続
-  connect(d, &Private::remainTimeStringChanged, this, &KitchenTimerThread::setRemainTimeString);
+  connect(d, &Private::remainTimeStringChanged
+          , this, &KitchenTimerThread::setRemainTimeString);
 
   //スレッドのイベントループ開始                  [7]
   dThread.start();
@@ -140,7 +142,8 @@ void KitchenTimerThread::setRemainTimeString(QString remainTimeString)
   if (m_remainTimeString == remainTimeString)
     return;
 
-  qDebug() << "setRemainTimeString()" << remainTimeString << QThread::currentThreadId();
+  qDebug() << "setRemainTimeString()" << remainTimeString
+           << QThread::currentThreadId();
 
   m_remainTimeString = remainTimeString;
   emit remainTimeStringChanged(m_remainTimeString);
@@ -190,8 +193,8 @@ void KitchenTimerThread::clear()
     setRemainTimeString(d->makeRemainTimeString(countTime()));
   }
   //カウント状況をクリア（カウント中ならフラグを落として停止も）
-  setRunning(false);
   setFired(false);
+  setRunning(false);
 }
 
 void KitchenTimerThread::finishedTimer(bool finished)
