@@ -17,8 +17,8 @@ ApplicationWindow {
     anchors.fill: parent
     anchors.margins: 10
     columns: 2
-    Text {
-      id: remainText
+    Label {
+      id: remainLabel
       Layout.fillWidth: true
       Layout.columnSpan: 2
       horizontalAlignment: Text.AlignHCenter

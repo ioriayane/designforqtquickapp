@@ -1,4 +1,4 @@
-import QtQuick 2.11
+﻿import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 
@@ -14,7 +14,7 @@ ApplicationWindow {
     anchors.fill: parent
     anchors.margins: 10
     columns: 2
-    Text {
+    Label {
       Layout.fillWidth: true
       Layout.columnSpan: 2
       horizontalAlignment: Text.AlignHCenter
