@@ -10,7 +10,7 @@ ApplicationWindow {
 
   //初期状態設定用
   function initialize(remainTime, running){
-    remainText.text = remainTime
+    remainLabel.text = remainTime
     clearButton.enabled = running
     return true
   }
@@ -20,9 +20,9 @@ ApplicationWindow {
     anchors.fill: parent
     anchors.margins: 10
     columns: 2
-    Text {
-      id: remainText
-      objectName: "remainText"  //C++からQMLタイプを検索する目印 [1]
+    Label {
+      id: remainLabel
+      objectName: "remainLabel"  //C++からQMLタイプを検索する目印 [1]
       Layout.fillWidth: true
       Layout.columnSpan: 2
       horizontalAlignment: Text.AlignHCenter
