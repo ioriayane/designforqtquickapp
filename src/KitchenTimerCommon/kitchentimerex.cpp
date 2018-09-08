@@ -1,13 +1,13 @@
-﻿#include "kitchentimerthread.h"
+﻿#include "kitchentimerex.h"
 #include <QDateTime>
 #include <QElapsedTimer>
 #include <QDebug>
 
-class KitchenTimerThread::Private : public QObject
+class KitchenTimerEx::Private : public QObject
 {
   Q_OBJECT
 public:
-  Private(KitchenTimerThread * parent);
+  Private(KitchenTimerEx * parent);
   ~Private();
 
   QString makeRemainTimeString(int remainTime) const;
@@ -21,22 +21,22 @@ public slots:
   void runTimer(int countTime);
 
 private:
-  KitchenTimerThread *q;  // 親クラスのポインタ [2]
+  KitchenTimerEx *q;  // 親クラスのポインタ [2]
 };
 
 
-KitchenTimerThread::Private::Private(KitchenTimerThread *parent)
+KitchenTimerEx::Private::Private(KitchenTimerEx *parent)
   : q(parent)           //メンバの初期化    [3]
 {
   qDebug() << "Private()" << QThread::currentThreadId();
 }
 
-KitchenTimerThread::Private::~Private()
+KitchenTimerEx::Private::~Private()
 {
   qDebug() << "~Private()" << QThread::currentThreadId();
 }
 
-QString KitchenTimerThread::Private::makeRemainTimeString
+QString KitchenTimerEx::Private::makeRemainTimeString
 (int remainTime) const
 {
   QDateTime d;
@@ -45,7 +45,7 @@ QString KitchenTimerThread::Private::makeRemainTimeString
 }
 
 //カウント処理     [4]
-void KitchenTimerThread::Private::runTimer(int countTime)
+void KitchenTimerEx::Private::runTimer(int countTime)
 {
   qDebug() << "runTimer()" << QThread::currentThreadId();
 
@@ -79,7 +79,7 @@ void KitchenTimerThread::Private::runTimer(int countTime)
 
 
 
-KitchenTimerThread::KitchenTimerThread(QObject *parent)
+KitchenTimerEx::KitchenTimerEx(QObject *parent)
   : QObject(parent)
   , d(new Private(this))    //プライベートクラスのインスタンス化
   , dThread(this)
@@ -97,18 +97,18 @@ KitchenTimerThread::KitchenTimerThread(QObject *parent)
   //スレッドのイベントループ停止のシグナルでクラスを破棄
   connect(&dThread, &QThread::finished, d, &QObject::deleteLater);
   //タイマー処理開始シグナルを接続
-  connect(this, &KitchenTimerThread::runTimer, d, &Private::runTimer);
+  connect(this, &KitchenTimerEx::runTimer, d, &Private::runTimer);
   //タイマー終了シグナルを接続
-  connect(d, &Private::finished, this, &KitchenTimerThread::finishedTimer);
+  connect(d, &Private::finished, this, &KitchenTimerEx::finishedTimer);
   //タイマーの時刻更新シグナルを接続
   connect(d, &Private::remainTimeStringChanged
-          , this, &KitchenTimerThread::setRemainTimeString);
+          , this, &KitchenTimerEx::setRemainTimeString);
 
   //スレッドのイベントループ開始                  [7]
   dThread.start();
 }
 
-KitchenTimerThread::~KitchenTimerThread()
+KitchenTimerEx::~KitchenTimerEx()
 {
   qDebug() << "~KitchenTimerThread()" << QThread::currentThreadId();
   //終了処理                              [8]
@@ -117,27 +117,27 @@ KitchenTimerThread::~KitchenTimerThread()
   dThread.wait();
 }
 
-QString KitchenTimerThread::remainTimeString() const
+QString KitchenTimerEx::remainTimeString() const
 {
   return m_remainTimeString;
 }
 
-int KitchenTimerThread::countTime() const
+int KitchenTimerEx::countTime() const
 {
   return m_countTime;
 }
 
-bool KitchenTimerThread::fired() const
+bool KitchenTimerEx::fired() const
 {
   return m_fired;
 }
 
-bool KitchenTimerThread::running() const
+bool KitchenTimerEx::running() const
 {
   return m_running;
 }
 
-void KitchenTimerThread::setRemainTimeString(QString remainTimeString)
+void KitchenTimerEx::setRemainTimeString(QString remainTimeString)
 {
   if (m_remainTimeString == remainTimeString)
     return;
@@ -149,7 +149,7 @@ void KitchenTimerThread::setRemainTimeString(QString remainTimeString)
   emit remainTimeStringChanged(m_remainTimeString);
 }
 
-void KitchenTimerThread::setCountTime(int countTime)
+void KitchenTimerEx::setCountTime(int countTime)
 {
   if (m_countTime == countTime)
     return;
@@ -158,7 +158,7 @@ void KitchenTimerThread::setCountTime(int countTime)
   emit countTimeChanged(m_countTime);
 }
 
-void KitchenTimerThread::setFired(bool fired)
+void KitchenTimerEx::setFired(bool fired)
 {
   if (m_fired == fired)
     return;
@@ -167,7 +167,7 @@ void KitchenTimerThread::setFired(bool fired)
   emit firedChanged(m_fired);
 }
 
-void KitchenTimerThread::setRunning(bool running)
+void KitchenTimerEx::setRunning(bool running)
 {
   if (m_running == running)
     return;
@@ -176,17 +176,17 @@ void KitchenTimerThread::setRunning(bool running)
   emit runningChanged(m_running);
 }
 
-void KitchenTimerThread::start()
+void KitchenTimerEx::start()
 {
   setRunning(true);
   emit runTimer(countTime());
 }
 
-void KitchenTimerThread::stop()
+void KitchenTimerEx::stop()
 {
 }
 
-void KitchenTimerThread::clear()
+void KitchenTimerEx::clear()
 {
   if(fired()){
     //カウントが終わってたら表示をリセット
@@ -197,7 +197,7 @@ void KitchenTimerThread::clear()
   setRunning(false);
 }
 
-void KitchenTimerThread::finishedTimer(bool finished)
+void KitchenTimerEx::finishedTimer(bool finished)
 {
   qDebug() << "finishedTimer()" << finished << QThread::currentThreadId();
   //最後までカウントしているかでtrue/falseを決める
@@ -206,4 +206,4 @@ void KitchenTimerThread::finishedTimer(bool finished)
 }
 
 //mocの対象にする                     [9]
-#include "kitchentimerthread.moc"
+#include "kitchentimerex.moc"

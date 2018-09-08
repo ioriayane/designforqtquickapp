@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QThread>
 
-class KitchenTimerThread : public QObject
+class KitchenTimerEx : public QObject
 {
   Q_OBJECT
 
@@ -15,8 +15,8 @@ class KitchenTimerThread : public QObject
   Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)
 
 public:
-  explicit KitchenTimerThread(QObject *parent = nullptr);
-  ~KitchenTimerThread();
+  explicit KitchenTimerEx(QObject *parent = nullptr);
+  ~KitchenTimerEx();
 
   QString remainTimeString() const;
   int countTime() const;
@@ -55,7 +55,7 @@ private:
   bool m_fired;
   bool m_running;
 
-  Q_DISABLE_COPY(KitchenTimerThread)
+  Q_DISABLE_COPY(KitchenTimerEx)
 };
 
 #endif // KITCHENTIMERTHREAD_H

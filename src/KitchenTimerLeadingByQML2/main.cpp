@@ -1,6 +1,6 @@
 ﻿#include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "kitchentimerthread.h"
+#include "kitchentimerex.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
   QGuiApplication app(argc, argv);
 
   //QMLへの公開登録           [1]
-  qmlRegisterType<KitchenTimerThread>("tech.relog.plugin.kitchentimer"
+  qmlRegisterType<KitchenTimerEx>("tech.relog.plugin.kitchentimer"
                                    , 1, 0, "KitchenTimer");
 
   QQmlApplicationEngine engine;

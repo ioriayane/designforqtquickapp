@@ -1,11 +1,11 @@
 
 SOURCES += \
         $$PWD/kitchentimer.cpp \
-    $$PWD/kitchentimerthread.cpp
+        $$PWD/kitchentimerex.cpp
 
 HEADERS += \
         $$PWD/kitchentimer.h \
-    $$PWD/kitchentimerthread.h
+        $$PWD/kitchentimerex.h
 
 INCLUDEPATH += \
         $$PWD
