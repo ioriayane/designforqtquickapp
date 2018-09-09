@@ -12,7 +12,7 @@ class KitchenTimer : public QObject
   Q_PROPERTY(QString remainTimeString READ remainTimeString NOTIFY remainTimeStringChanged)
   Q_PROPERTY(int countTime READ countTime WRITE setCountTime NOTIFY countTimeChanged)
   Q_PROPERTY(bool fired READ fired NOTIFY firedChanged)
-  Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)
+  Q_PROPERTY(bool running READ running NOTIFY runningChanged)
 
 public:
   explicit KitchenTimer(QObject *parent = nullptr);
