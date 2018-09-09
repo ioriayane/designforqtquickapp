@@ -43,6 +43,6 @@ ApplicationWindow {
   //残り時間をカウントするとタイマー機能
   KitchenTimer {
     id: timer
-//    countTime: 10000
+    countTime: 10000
   }
 }

@@ -1,5 +1,5 @@
-﻿#ifndef KITCHENTIMERTHREAD_H
-#define KITCHENTIMERTHREAD_H
+﻿#ifndef KITCHENTIMEREX_H
+#define KITCHENTIMEREX_H
 
 #include <QObject>
 #include <QThread>
@@ -12,7 +12,7 @@ class KitchenTimerEx : public QObject
   Q_PROPERTY(QString remainTimeString READ remainTimeString NOTIFY remainTimeStringChanged)
   Q_PROPERTY(int countTime READ countTime WRITE setCountTime NOTIFY countTimeChanged)
   Q_PROPERTY(bool fired READ fired NOTIFY firedChanged)
-  Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)
+  Q_PROPERTY(bool running READ running NOTIFY runningChanged)
 
 public:
   explicit KitchenTimerEx(QObject *parent = nullptr);
@@ -47,15 +47,8 @@ private:
   //プライベートクラス用の宣言                  [2]
   class Private;
   Private *d;
-  //プライベートクラス用のスレッドクラス
-  QThread dThread;
-
-  QString m_remainTimeString;
-  int m_countTime;
-  bool m_fired;
-  bool m_running;
 
   Q_DISABLE_COPY(KitchenTimerEx)
 };
 
-#endif // KITCHENTIMERTHREAD_H
+#endif // KITCHENTIMEREX_H
