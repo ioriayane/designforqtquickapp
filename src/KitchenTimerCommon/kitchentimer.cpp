@@ -1,4 +1,4 @@
-#include "kitchentimer.h"
+﻿#include "kitchentimer.h"
 
 #include <QDateTime>
 #include <QTimerEvent>
@@ -111,7 +111,6 @@ void KitchenTimer::timerEvent(QTimerEvent *e)
 
 void KitchenTimer::updateRemainTime(int remainTime)
 {
-  QDateTime d;
-  d.setTime_t(static_cast<uint>(remainTime / 1000));
-  setRemainTimeString(d.toString(QStringLiteral("mm:ss")));
+  setRemainTimeString(QTime::fromMSecsSinceStartOfDay(remainTime)
+                      .toString("mm:ss"));
 }

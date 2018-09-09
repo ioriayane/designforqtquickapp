@@ -39,9 +39,8 @@ KitchenTimerEx::Private::~Private()
 QString KitchenTimerEx::Private::makeRemainTimeString
 (int remainTime) const
 {
-  QDateTime d;
-  d.setTime_t(static_cast<uint>(remainTime / 1000));
-  return d.toString(QStringLiteral("mm:ss"));
+  return QTime::fromMSecsSinceStartOfDay(remainTime)
+      .toString("mm:ss");
 }
 
 //カウント処理     [4]
