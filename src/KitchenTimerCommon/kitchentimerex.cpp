@@ -24,13 +24,13 @@ public slots:
   void runTimer(int countTime);
 
 private:
-  KitchenTimerEx *q;
+  KitchenTimerEx *q;     //親クラスのポインタ     [2]
 
   Q_DISABLE_COPY(KitchenTimerCounter)
 };
 
 KitchenTimerCounter::KitchenTimerCounter(KitchenTimerEx *parent)
-  : q(parent)
+  : q(parent)           //メンバの初期化    [3]
 {
   qDebug() << "KitchenTimerCounter()" << QThread::currentThreadId();
 }
@@ -45,7 +45,7 @@ QString KitchenTimerCounter::makeRemainTimeString(int remainTime) const
   return QTime::fromMSecsSinceStartOfDay(remainTime).toString("mm:ss");
 }
 
-//カウント処理     [2]
+//カウント処理     [4]
 void KitchenTimerCounter::runTimer(int countTime)
 {
   qDebug() << "runTimer()" << QThread::currentThreadId();
@@ -96,7 +96,7 @@ public:
   void finishedTimer(bool finished);
 
 private:
-  KitchenTimerEx *q;            //親クラスのポインタ [3]
+  KitchenTimerEx *q;            //親クラスのポインタ     [2]
   KitchenTimerCounter *counter; //残り時間のカウントクラス
   QThread *thread;              //スレッドクラス
 
@@ -108,7 +108,7 @@ private:
 
 
 KitchenTimerEx::Private::Private(KitchenTimerEx *parent)
-  : q(parent)           //メンバの初期化    [4]
+  : q(parent)
   , counter(new KitchenTimerCounter(parent))
   , thread(new QThread(parent))
   , m_remainTimeString(QStringLiteral("03:00"))
@@ -123,11 +123,14 @@ KitchenTimerEx::Private::Private(KitchenTimerEx *parent)
 
   //各種シグナルの接続                       [6]
   //スレッドのイベントループ停止のシグナルでクラスの破棄をスケジュール
-  connect(thread, &QThread::finished, counter, &QObject::deleteLater);
+  connect(thread, &QThread::finished
+          , counter, &QObject::deleteLater);
   //タイマー処理開始シグナルを接続
-  connect(q, &KitchenTimerEx::runTimer, counter, &KitchenTimerCounter::runTimer);
+  connect(q, &KitchenTimerEx::runTimer
+          , counter, &KitchenTimerCounter::runTimer);
   //タイマー終了シグナルを接続
-  connect(counter, &KitchenTimerCounter::finished, q, &KitchenTimerEx::finishedTimer);
+  connect(counter, &KitchenTimerCounter::finished
+          , q, &KitchenTimerEx::finishedTimer);
   //タイマーの時刻更新シグナルを接続
   connect(counter, &KitchenTimerCounter::remainTimeStringChanged
           , q, &KitchenTimerEx::setRemainTimeString);
